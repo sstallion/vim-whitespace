@@ -124,10 +124,10 @@ noremap <silent> <SID>WhitespaceNext   :call <SID>WhitespaceNext()<CR>
 noremap <silent> <SID>WhitespacePrev   :call <SID>WhitespacePrev()<CR>
 noremap <silent> <SID>WhitespaceStrip  :call <SID>WhitespaceStrip(1, line('$'))<CR>
 
-noremenu <script> Plugin.Whitespace.Show\ Matches   <SID>WhitespaceShow
-noremenu <script> Plugin.Whitespace.Hide\ Matches   <SID>WhitespaceHide
-noremenu <script> Plugin.Whitespace.Next\ Match     <SID>WhitespaceNext
-noremenu <script> Plugin.Whitespace.Previous\ Match <SID>WhitespacePrev
+noremenu <script> Plugin.Whitespace.Show\ Matches     <SID>WhitespaceShow
+noremenu <script> Plugin.Whitespace.Hide\ Matches     <SID>WhitespaceHide
+noremenu <script> Plugin.Whitespace.Next\ Match       <SID>WhitespaceNext
+noremenu <script> Plugin.Whitespace.Previous\ Match   <SID>WhitespacePrev
 noremenu <script> Plugin.Whitespace.Strip\ Whitespace <SID>WhitespaceStrip
 
 if !hasmapto('<Plug>WhitespaceToggle')
@@ -152,14 +152,14 @@ endif
 
 augroup Whitespace
   autocmd!
-  autocmd BufReadPost,InsertLeave   * call <SID>WhitespaceMatch('n')
-  autocmd InsertEnter               * call <SID>WhitespaceMatch('i')
-  autocmd BufWinLeave               * call <SID>WhitespaceClear()
+  autocmd BufReadPost,InsertLeave * call <SID>WhitespaceMatch('n')
+  autocmd InsertEnter             * call <SID>WhitespaceMatch('i')
+  autocmd BufWinLeave             * call <SID>WhitespaceClear()
 
-  autocmd FileType,Syntax           * call <SID>WhitespaceMatch('n')
+  autocmd FileType,Syntax         * call <SID>WhitespaceMatch('n')
 
   if v:version > 704 || v:version == 704 && has('patch786')
-    autocmd OptionSet expandtab       call <SID>WhitespaceMatch('n')
+    autocmd OptionSet expandtab     call <SID>WhitespaceMatch('n')
   endif
 
   autocmd BufWritePre *
