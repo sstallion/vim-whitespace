@@ -1,5 +1,5 @@
 " whitespace.vim - find and correct common whitespace errors
-" Last Change:  2016 Sep 13
+" Last Change:  2017 Mar 07
 " Maintainer:   Steven Stallion <sstallion@gmail.com>
 " License:      Simplified BSD License
 
@@ -110,25 +110,16 @@ function! s:WhitespaceStrip(start, end)
   endtry
 endfunction
 
-noremap <unique> <script> <Plug>WhitespaceShow   <SID>WhitespaceShow
-noremap <unique> <script> <Plug>WhitespaceHide   <SID>WhitespaceHide
-noremap <unique> <script> <Plug>WhitespaceToggle <SID>WhitespaceToggle
-noremap <unique> <script> <Plug>WhitespaceNext   <SID>WhitespaceNext
-noremap <unique> <script> <Plug>WhitespacePrev   <SID>WhitespacePrev
-noremap <unique> <script> <Plug>WhitespaceStrip  <SID>WhitespaceStrip
+command -range=% WhitespaceStrip call <SID>WhitespaceStrip(<line1>, <line2>)
 
-noremap <silent> <SID>WhitespaceShow   :call <SID>WhitespaceShow()<CR>
-noremap <silent> <SID>WhitespaceHide   :call <SID>WhitespaceHide()<CR>
-noremap <silent> <SID>WhitespaceToggle :call <SID>WhitespaceToggle()<CR>
-noremap <silent> <SID>WhitespaceNext   :call <SID>WhitespaceNext()<CR>
-noremap <silent> <SID>WhitespacePrev   :call <SID>WhitespacePrev()<CR>
-noremap <silent> <SID>WhitespaceStrip  :call <SID>WhitespaceStrip(1, line('$'))<CR>
-
-noremenu <script> Plugin.Whitespace.Show\ Matches     <SID>WhitespaceShow
-noremenu <script> Plugin.Whitespace.Hide\ Matches     <SID>WhitespaceHide
-noremenu <script> Plugin.Whitespace.Next\ Match       <SID>WhitespaceNext
-noremenu <script> Plugin.Whitespace.Previous\ Match   <SID>WhitespacePrev
-noremenu <script> Plugin.Whitespace.Strip\ Whitespace <SID>WhitespaceStrip
+nnoremap <silent> <Plug>WhitespaceShow        :call <SID>WhitespaceShow()<CR>
+nnoremap <silent> <Plug>WhitespaceHide        :call <SID>WhitespaceHide()<CR>
+nnoremap <silent> <Plug>WhitespaceToggle      :call <SID>WhitespaceToggle()<CR>
+nnoremap <silent> <Plug>WhitespaceNext        :call <SID>WhitespaceNext()<CR>
+nnoremap <silent> <Plug>WhitespacePrev        :call <SID>WhitespacePrev()<CR>
+nnoremap <silent> <Plug>WhitespaceStripBuffer :<C-U>1,$WhitespaceStrip<CR>
+nnoremap <silent> <Plug>WhitespaceStripLine   :<C-U>.WhitespaceStrip<CR>
+vnoremap <silent> <Plug>WhitespaceStripVisual :<C-U>'<,'>WhitespaceStrip<CR>
 
 if !hasmapto('<Plug>WhitespaceToggle')
   nmap <unique> <Leader>w <Plug>WhitespaceToggle
@@ -142,13 +133,23 @@ if !hasmapto('<Plug>WhitespacePrev')
   nmap <unique> [w <Plug>WhitespacePrev
 endif
 
-if !exists(':WhitespaceStrip')
-  command -range=% WhitespaceStrip :call s:WhitespaceStrip(<line1>, <line2>)
-
-  noremap  <silent> gS :<C-U>1,$WhitespaceStrip<CR>
-  nnoremap <silent> gs :<C-U>.WhitespaceStrip<CR>
-  vnoremap <silent> gs :<C-U>'<,'>WhitespaceStrip<CR>
+if !hasmapto('<Plug>WhitespaceStripBuffer')
+  nmap <unique> gS <Plug>WhitespaceStripBuffer
 endif
+
+if !hasmapto('<Plug>WhitespaceStripLine')
+  nmap <unique> gs <Plug>WhitespaceStripLine
+endif
+
+if !hasmapto('<Plug>WhitespaceStripVisual')
+  vmap <unique> gs <Plug>WhitespaceStripVisual
+endif
+
+nmenu Plugin.Whitespace.Show\ Matches     <Plug>WhitespaceShow
+nmenu Plugin.Whitespace.Hide\ Matches     <Plug>WhitespaceHide
+nmenu Plugin.Whitespace.Next\ Match       <Plug>WhitespaceNext
+nmenu Plugin.Whitespace.Previous\ Match   <Plug>WhitespacePrev
+nmenu Plugin.Whitespace.Strip\ Whitespace <Plug>WhitespaceStripBuffer
 
 augroup Whitespace
   autocmd!
