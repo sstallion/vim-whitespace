@@ -62,12 +62,12 @@ List of file types to ignore tab-related errors. Defaults to the empty list.
 ### `:WhitespaceStrip`
 
 Corrects whitespace errors, optionally accepting a range. By default the entire
-file is corrected.
+buffer is corrected.
 
 ## Key Mappings
 
-Key mappings may be overridden by assigning the corresponding `<Plug>` command
-to a different sequence.
+Key mappings may be overridden by assigning the corresponding `<Plug>` binding
+to a different sequence in your `.vimrc`.
 
 ### `<Leader>w`
 
@@ -85,12 +85,14 @@ Jump to next whitespace error in normal mode. Mapped to `<Plug>WhitespaceNext`.
 
 ### `gS`
 
-Corrects whitespace errors for the entire file in normal mode.
+Corrects whitespace errors for the entire buffer in normal mode. Mapped to
+`<Plug>WhitespaceStripBuffer`.
 
 ### `gs`
 
 Corrects whitespace errors for the current line in normal mode or the
-highlighted area in visual mode.
+highlighted area in visual mode. Mapped to `<Plug>WhitespaceStripLine` and
+`WhitespaceStripVisual`, respectively.
 
 ## FAQ
 
