@@ -1,5 +1,5 @@
 " whitespace.vim - find and correct common whitespace errors
-" Last Change:  2017 Mar 07
+" Last Change:  2017 Jun 14
 " Maintainer:   Steven Stallion <sstallion@gmail.com>
 " License:      Simplified BSD License
 
@@ -18,7 +18,12 @@ let g:whitespace_hidden = get(g:, 'whitespace_hidden', 0)
 let g:whitespace_highlight = get(g:, 'whitespace_highlight', 'ExtraWhitespace')
 
 let g:whitespace_ignore = get(g:, 'whitespace_ignore', [])
+let g:whitespace_ignore_splits = get(g:, 'whitespace_ignore_splits', 0)
 let g:whitespace_ignore_tabs = get(g:, 'whitespace_ignore_tabs', [])
+
+function! s:hidden()
+  return g:whitespace_hidden || b:whitespace_hidden
+endfunction
 
 function! s:ignored()
   return !empty(&buftype) ||
@@ -47,33 +52,22 @@ function! s:getpattern(mode)
   return join(list, '\|')
 endfunction
 
-function! s:WhitespaceShow()
-  let g:whitespace_hidden = 0
-  call s:WhitespaceMatch('n')
-endfunction
-
-function! s:WhitespaceHide()
-  let g:whitespace_hidden = 1
-  call s:WhitespaceClear()
-endfunction
-
-function! s:WhitespaceToggle()
-  if g:whitespace_hidden
-    call s:WhitespaceShow()
-  else
-    call s:WhitespaceHide()
-  endif
+function! s:WhitespaceSetup()
+  let b:whitespace_hidden = get(b:, 'whitespace_hidden', g:whitespace_hidden)
+  let w:whitespace_matchnr = get(w:, 'whitespace_matchnr', 0)
 endfunction
 
 function! s:WhitespaceClear()
-  if get(w:, 'whitespace_matchnr', 0)
+  call s:WhitespaceSetup()
+  if w:whitespace_matchnr != 0
     call matchdelete(w:whitespace_matchnr)
     let w:whitespace_matchnr = 0
   endif
 endfunction
 
 function! s:WhitespaceMatch(mode)
-  if s:ignored() || g:whitespace_hidden
+  call s:WhitespaceSetup()
+  if s:hidden() || s:ignored()
     return
   endif
   call s:WhitespaceClear()
@@ -81,15 +75,42 @@ function! s:WhitespaceMatch(mode)
         \ matchadd(g:whitespace_highlight, s:getpattern(a:mode))
 endfunction
 
+function! s:WhitespaceUpdate()
+  call s:WhitespaceSetup()
+  if s:hidden() || s:ignored()
+    call s:WhitespaceClear()
+  else
+    call s:WhitespaceMatch('n')
+  endif
+endfunction
+
+function! s:WhitespaceShow()
+  let b:whitespace_hidden = 0
+  call s:WhitespaceMatch('n')
+endfunction
+
+function! s:WhitespaceHide()
+  let b:whitespace_hidden = 1
+  call s:WhitespaceClear()
+endfunction
+
+function! s:WhitespaceToggle()
+  if s:hidden()
+    call s:WhitespaceShow()
+  else
+    call s:WhitespaceHide()
+  endif
+endfunction
+
 function! s:WhitespaceNext()
-  if s:ignored() || g:whitespace_hidden
+  if s:hidden() || s:ignored()
     return
   endif
   call search(s:getpattern('n'), 'w')
 endfunction
 
 function! s:WhitespacePrev()
-  if s:ignored() || g:whitespace_hidden
+  if s:hidden() || s:ignored()
     return
   endif
   call search(s:getpattern('n'), 'wb')
@@ -153,15 +174,20 @@ nmenu Plugin.Whitespace.Strip\ Whitespace <Plug>WhitespaceStripBuffer
 
 augroup Whitespace
   autocmd!
-  autocmd BufReadPost,InsertLeave * call <SID>WhitespaceMatch('n')
-  autocmd InsertEnter             * call <SID>WhitespaceMatch('i')
-  autocmd BufWinLeave             * call <SID>WhitespaceClear()
+  autocmd BufReadPost * call <SID>WhitespaceUpdate()
 
-  autocmd FileType,Syntax         * call <SID>WhitespaceMatch('n')
+  if !g:whitespace_ignore_splits
+    autocmd VimEnter autocmd WinEnter * call <SID>WhitespaceUpdate()
+  endif
 
   if v:version > 704 || v:version == 704 && has('patch786')
-    autocmd OptionSet expandtab     call <SID>WhitespaceMatch('n')
+    autocmd OptionSet expandtab call <SID>WhitespaceUpdate()
   endif
+
+  autocmd BufWinLeave * call <SID>WhitespaceClear()
+
+  autocmd InsertEnter * call <SID>WhitespaceMatch('i')
+  autocmd InsertLeave * call <SID>WhitespaceMatch('n')
 
   autocmd BufWritePre *
         \ if g:whitespace_autostrip | execute ':WhitespaceStrip' | endif

@@ -53,6 +53,10 @@ Name of the highlight group used to display whitespace errors. Defaults to
 
 List of file types to ignore whitespace errors. Defaults to the empty list.
 
+### `g:whitespace_ignore_splits`
+
+Disables showing whitespace errors in split windows. Defaults to `0`.
+
 ### `g:whitespace_ignore_tabs`
 
 List of file types to ignore tab-related errors. Defaults to the empty list.
@@ -120,6 +124,17 @@ tab errors, add the following to your `.vimrc`:
         \ 'gitrebase',
         \ 'gitsendemail',
         \ ]
+
+### Why do I see whitespace errors when using Command-T (and other plugins)?
+
+Many plugins will split the current window in order to display information.
+Unfortunately, there is not a good way to detect these cases, however there is
+usually a filetype associated with the loaded buffer. If adding this value to
+`g:whitespace_ignore` doesn't help (as in the case of Command-T), you can
+disable whitespace checking for split windows by adding the following to your
+`.vimrc`:
+
+    let g:whitespace_ignore_splits = 1
 
 ## Acknowledgement
 
