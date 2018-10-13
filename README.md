@@ -1,6 +1,7 @@
 # whitespace.vim
 
 whitespace.vim is a Vim plugin that finds and corrects common whitespace errors.
+Inspiration for this plugin was taken from the [Vim Tips wiki][1].
 
 ![Screenshot](screenshot.gif)
 
@@ -136,7 +137,17 @@ disable whitespace checking for split windows by adding the following to your
 
     let g:whitespace_ignore_splits = 1
 
-## Acknowledgement
+## Contributing
 
-Inspiration for this plugin was taken from the Vim Tips
-[wiki](http://vim.wikia.com/wiki/Remove_unwanted_spaces).
+Pull requests are welcome! If a problem is encountered using this plugin, please
+file an issue on [GitHub][2].
+
+## License
+
+Source code in this repository is licensed under a Simplified BSD License. See
+[LICENSE] for more details.
+
+[1]: http://vim.wikia.com/wiki/Remove_unwanted_spaces
+[2]: https://github.com/sstallion/vim-whitespace/issues
+
+[LICENSE]: LICENSE
