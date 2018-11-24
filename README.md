@@ -1,6 +1,7 @@
 # whitespace.vim
 
-whitespace.vim is a Vim plugin that finds and corrects common whitespace errors.
+whitespace.vim is a Vim plugin that finds and corrects common whitespace errors.  
+Forked version has only simple fix. Adding `let g:whitespace_default_hotkeys=1` to your `~/.vimrc` will prevent it from re-assigning number of shortcuts with <kbd>Leader></kbd> prefix.
 
 ![Screenshot](screenshot.gif)
 
