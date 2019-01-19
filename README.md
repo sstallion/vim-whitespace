@@ -1,35 +1,9 @@
 # whitespace.vim
-
 whitespace.vim is a Vim plugin that finds and corrects common whitespace errors.  
-Forked version has only simple fix. Adding `let g:whitespace_default_hotkeys=1` to your `~/.vimrc` will prevent it from re-assigning number of shortcuts with <kbd>Leader</kbd> prefix.
 
-![Screenshot](screenshot.gif)
+Forked version has only one simple fix.  
+Adding `let g:whitespace_default_hotkeys=1` to your `~/.vimrc` will prevent it from re-assigning number of shortcuts with <kbd>Leader</kbd> prefix.
 
-## Installation
-
-This plugin is compatible with several popular plugin managers:
-
-### Pathogen
-
-    git clone git://github.com/sstallion/vim-whitespace.git ~/.vim/bundle/vim-whitespace
-
-### Vundle
-
-Add the following to your `.vimrc` and execute the `:PluginInstall` command:
-
-    Plugin 'sstallion/vim-whitespace'
-
-### NeoBundle
-
-Add the following to your `.vimrc` and execute the `:NeoBundleInstall` command:
-
-    NeoBundle 'sstallion/vim-whitespace'
-
-### vim-plug
-
-Add the following to your `.vimrc` and execute the `:PlugInstall` command:
-
-    Plug 'sstallion/vim-whitespace'
 
 ## Configuration
 
