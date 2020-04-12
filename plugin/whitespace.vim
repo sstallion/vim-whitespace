@@ -1,6 +1,7 @@
 " whitespace.vim - find and correct common whitespace errors
-" Last Change:  2017 Jun 14
+" Last Change:  2018 Nov 24
 " Maintainer:   Steven Stallion <sstallion@gmail.com>
+" Modified by:  Andrew Savchenko <andrew@savchenko.net>
 " License:      Simplified BSD License
 
 if exists('g:loaded_whitespace')
@@ -142,28 +143,31 @@ nnoremap <silent> <Plug>WhitespaceStripBuffer :<C-U>1,$WhitespaceStrip<CR>
 nnoremap <silent> <Plug>WhitespaceStripLine   :<C-U>.WhitespaceStrip<CR>
 vnoremap <silent> <Plug>WhitespaceStripVisual :<C-U>'<,'>WhitespaceStrip<CR>
 
-if !hasmapto('<Plug>WhitespaceToggle')
-  nmap <unique> <Leader>w <Plug>WhitespaceToggle
-endif
+" Don't mess with hotkeys
+if !exists("g:whitespace_default_hotkeys")
+    if !hasmapto('<Plug>WhitespaceToggle')
+      nmap <unique> <Leader>w <Plug>WhitespaceToggle
+    endif
 
-if !hasmapto('<Plug>WhitespaceNext')
-  nmap <unique> ]w <Plug>WhitespaceNext
-endif
+    if !hasmapto('<Plug>WhitespaceNext')
+      nmap <unique> ]w <Plug>WhitespaceNext
+    endif
 
-if !hasmapto('<Plug>WhitespacePrev')
-  nmap <unique> [w <Plug>WhitespacePrev
-endif
+    if !hasmapto('<Plug>WhitespacePrev')
+      nmap <unique> [w <Plug>WhitespacePrev
+    endif
 
-if !hasmapto('<Plug>WhitespaceStripBuffer')
-  nmap <unique> gS <Plug>WhitespaceStripBuffer
-endif
+    if !hasmapto('<Plug>WhitespaceStripBuffer')
+      nmap <unique> gS <Plug>WhitespaceStripBuffer
+    endif
 
-if !hasmapto('<Plug>WhitespaceStripLine')
-  nmap <unique> gs <Plug>WhitespaceStripLine
-endif
+    if !hasmapto('<Plug>WhitespaceStripLine')
+      nmap <unique> gs <Plug>WhitespaceStripLine
+    endif
 
-if !hasmapto('<Plug>WhitespaceStripVisual')
-  vmap <unique> gs <Plug>WhitespaceStripVisual
+    if !hasmapto('<Plug>WhitespaceStripVisual')
+      vmap <unique> gs <Plug>WhitespaceStripVisual
+    endif
 endif
 
 nmenu Plugin.Whitespace.Show\ Matches     <Plug>WhitespaceShow
